@@ -10,7 +10,7 @@ If you get an error, you don't have python at all. If not, it will list your Pyt
 
 ### Installing Python3 - Windows 
 
-Go to [this link](https://www.python.org/downloads/windows/) and download 3.7.3.
+Go to [this link](https://www.python.org/downloads/windows/) and download 3.7.3. 😎
 
 ### Installing Python3 - Mac
 
