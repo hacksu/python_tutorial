@@ -1,21 +1,48 @@
 from pygame.locals import *
 import pygame
+import time
 
 grid_size = 44
 
 class Player:
-  x = 40
-  y = 40
+  x = []
+  y = []
   speed = 1
+  step = grid_size
+  
+  # The direction the snake is currently moving. Note that we'll never move diagonally. 
+  x_direction = 1  
+  y_direction = 0   
+  length = 3
+
+  def __init__(self, length):
+    self.length = length
+    for i in range(0,length):
+      self.x.append(0)
+      self.y.append(0)
+
+  def update(self):
+ 
+ 
+    # update previous positions. This for loop iterates from the last node to the first,
+    # updating each node to be the value of the subsequent node
+    for i in range(self.length-1,0,-1):
+      self.x[i] = self.x[i-1]
+      self.y[i] = self.y[i-1]
+
+    # update position of head of snake
+    self.x[0] = self.x[0] + (self.step * self.x_direction)
+    self.y[0] = self.y[0] + (self.step * self.y_direction)
+
 
   def __str__(self):
-    return str("Current coordinates: {}, {}".format(self.x, self.y))
+    return "self.x[" + str(self.x[0]) + "] = self.x[" + str(self.y[0]) + "]"
 
   # We can call this with positive or negative numbers for x or y
   # to move the player  right, left, up, or down.
-  def move(self, x, y):                 
-    self.x = self.x + (self.speed * x)
-    self.y = self.y + (self.speed * y)
+  def move(self, x, y):    
+    self.x_direction = x
+    self.y_direction = y
 
 # Setting up the class for our games
 class App:
@@ -28,7 +55,7 @@ class App:
     self._running = False
     self._player_image = None   # We'll store the image we'll use for the player here
     self._display = None        # This will be the window we display everything on
-    self.player = Player()      # Creating a new player object. This calls that __init__ thing!
+    self.player = Player(3)      # Creating a new player object. This calls that __init__ thing!
 
   # This will be the function we call to start our game! It should only be called once!
   def on_execute(self):
@@ -51,10 +78,14 @@ class App:
       pygame.event.pump()             # This lets Pygame know a frame has passed
       keys = pygame.key.get_pressed() # Returns a dictionary of booleans for which  keys are pressed
 
-      # Gives us -1 or 1 calculated by which key we're pressing
-      x_movement = keys[K_RIGHT] - keys[K_LEFT]
-      y_movement = keys[K_DOWN] - keys[K_UP]
-      self.player.move(x_movement, y_movement)
+      if (keys[K_RIGHT]):
+        self.player.move(1, 0)
+      elif (keys[K_LEFT]):
+        self.player.move(-1, 0)
+      if (keys[K_DOWN]):
+        self.player.move(0, 1)
+      elif (keys[K_UP]):
+        self.player.move(0, -1)
       
       # Lets us log where the player is at a given time
       if (keys[K_SPACE]):
@@ -68,16 +99,23 @@ class App:
       self.on_loop()
       self.on_render()
 
+      time.sleep (0.2)
+
     # This will ONLY be called once  that while loop is exited. 
     self.on_cleanup()
  
   def on_loop(self):
+    self.player.update()
     pass
  
   # Rendering out specific images
   def on_render(self):
     self._display.fill((0,0,0))
-    self._display.blit(self._player_image,(self.player.x,self.player.y))
+    
+    # Drawing the player:
+    for i in range(0,self.player.length):
+      self._display.blit(self._player_image, (self.player.x[i], self.player.y[i])) 
+
     pygame.display.flip() # "Flips" the graphics to our new specifications
  
   def on_cleanup(self):

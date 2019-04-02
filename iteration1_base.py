@@ -4,35 +4,21 @@ import pygame
 grid_size = 44
 
 class Player:
-  x = 40
-  y = 40
-  speed = 1
+  # Initialize attributes x, y, and speed
 
-  def __str__(self):
-    return str("Current coordinates: {}, {}".format(self.x, self.y))
+  # def __str__(self):
 
-  # We can call this with positive or negative numbers for x or y
-  # to move the player  right, left, up, or down.
-  def move(self, x, y):                 
-    self.x = self.x + (self.speed * x)
-    self.y = self.y + (self.speed * y)
+  # def move(self, x, y):   
+  pass              
 
-# Setting up the class for our games
+
 class App:
-  windowWidth = 800
-  windowHeight = 600
-  player = 0
+  # Initializing variables windowWidth, windowHeight, and  player
 
-  # Our app's constructor
-  def __init__(self):
-    self._running = False
-    self._player_image = None   # We'll store the image we'll use for the player here
-    self._display = None        # This will be the window we display everything on
-    self.player = Player()      # Creating a new player object. This calls that __init__ thing!
+  # def __init__(self):
 
-  # This will be the function we call to start our game! It should only be called once!
-  def on_execute(self):
-    pygame.init() # Initializing our pygame object
+  # def on_execute(self):
+    # Initialize the game
 
     # Setting up our display. We'll use this to render our game:
     self._display = pygame.display.set_mode((self.windowWidth, self.windowHeight), pygame.HWSURFACE)
@@ -51,14 +37,10 @@ class App:
       pygame.event.pump()             # This lets Pygame know a frame has passed
       keys = pygame.key.get_pressed() # Returns a dictionary of booleans for which  keys are pressed
 
-      if (keys[K_RIGHT]):
-        self.player.move(1, 0)
-      elif (keys[K_LEFT]):
-        self.player.move(-1, 0)
-      if (keys[K_DOWN]):
-        self.player.move(0, 1)
-      elif (keys[K_UP]):
-        self.player.move(0, -1)
+      # Gives us -1 or 1 calculated by which key we're pressing
+      x_movement = keys[K_RIGHT] - keys[K_LEFT]
+      y_movement = keys[K_DOWN] - keys[K_UP]
+      self.player.move(x_movement, y_movement)
       
       # Lets us log where the player is at a given time
       if (keys[K_SPACE]):

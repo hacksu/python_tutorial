@@ -23,8 +23,7 @@ class Player:
     self.updateCount = self.updateCount + 1
     if self.updateCount > self.updateCountMax:
  
-      # update previous positions
-      for i in range(self.length-1,0,-1):
+      for i in range(self.length-1, 0, -1):
         print("self.x[" + str(i) + "] = self.x[" + str(i-1) + "]")
         self.x[i] = self.x[i-1]
         self.y[i] = self.y[i-1]
@@ -122,7 +121,7 @@ class App:
       self.on_loop()
       self.on_render()
  
-      time.sleep (50.0 / 1000.0);
+      time.sleep (50.0 / 1000.0)
     self.on_cleanup()
  
 if __name__ == "__main__" :
